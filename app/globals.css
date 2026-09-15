@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --brand: #6366f1;
+  --risk-red: #ef4444;
+  --risk-red-bg: #451a1a;
+  --risk-amber: #f59e0b;
+  --risk-amber-bg: #453006;
+  --risk-green: #10b981;
+  --risk-green-bg: #064e3b;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: #f1f5f9;
+  font-family: Inter, "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "cv11", "ss01";
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+
+.card {
+  @apply rounded-xl border border-slate-700/50 bg-[#1E293B] shadow-sm;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg bg-[#6366F1] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#5457e5] disabled:cursor-not-allowed disabled:opacity-50;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.35);
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700/60 bg-transparent px-4 py-2.5 text-sm font-medium text-slate-300 transition hover:border-slate-500 hover:bg-white/5;
+}
+
+.chip {
+  @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide;
+}
+
+/* Risk badges — high-contrast visibility on dark */
+.badge-red {
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.4);
+  background: #451a1a;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
+}
+
+.badge-yellow {
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.4);
+  background: #453006;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+}
+
+.badge-green {
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.4);
+  background: #064e3b;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+}
+
+textarea:focus,
+input:focus,
+select:focus {
+  outline: 2px solid #6366f155;
+  outline-offset: 1px;
+}
+
+textarea,
+select {
+  color-scheme: dark;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.rise {
+  animation: rise 0.35s ease both;
+}

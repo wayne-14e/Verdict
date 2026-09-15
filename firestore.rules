@@ -1,0 +1,27 @@
+rules_version = '2';
+
+// Verdict — production rules. Users can only ever read/write their own
+// profile and scan history. No public or cross-user access.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+
+      match /scans/{scanId} {
+        allow read, create, delete: if isOwner(uid);
+      }
+    }
+
+    // Deny everything else by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
