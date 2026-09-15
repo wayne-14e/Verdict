@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { z } from "zod";
 import { buildEmail, toneSchema } from "@/lib/analyzer";
-import { getGeminiModels } from "@/lib/gemini";
+import { AllModelsFailedError, runAcrossModels } from "@/lib/gemini";
 import { isAppCheckEnforced, verifyAppCheckToken, verifyIdToken } from "@/lib/firebaseAdmin";
 
 export const runtime = "nodejs";
@@ -102,12 +102,51 @@ export async function POST(req: NextRequest) {
 
     const apiKey = (process.env.GEMINI_API_KEY || "").trim();
 
-    // Prefer Gemini (same .env key) with per-model fallback; fall back to
-    // deterministic template of REAL flags when every model fails.
+    // Prefer Gemini (same .env key) with per-model fallback + per-attempt
+    // timeout; fall back to the deterministic template of REAL flags when
+    // every model fails or the 30s function budget runs low.
     if (apiKey) {
-      for (const model of getGeminiModels()) {
-        const ai = await draftWithGemini(apiKey, model, input);
-        if (ai) return NextResponse.json(ai);
+      try {
+        const { value: ai } = await runAcrossModels(
+          async (model, timeoutMs) => {
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const generativeModel = genAI.getGenerativeModel(
+              {
+                model,
+                generationConfig: { responseMimeType: "application/json", temperature: 0.4 },
+              },
+              { timeout: timeoutMs }
+            );
+            const bullets = input.flags
+              .filter((f) => f.severity !== "GREEN")
+              .slice(0, 5)
+              .map((f) => `- ${f.clauseTitle} [${f.severity}/${f.category}]: ${f.suggestedRevision}`)
+              .join("\n");
+            const prompt = `You are "Verdict", drafting a freelancer counter-offer email. Tone: ${input.tone} (polite = warm/professional, firm = business-standard, strict = non-negotiable).
+Contract: ${input.contractName} (safety score ${input.overallRiskScore}/100).
+Negotiation points:\n${bullets || "- Standard Net-15 payment terms."}
+Return STRICT JSON ONLY: {"subject": string, "body": string}. Keep the body under 300 words, professional, with the points as a bulleted list and a courteous close.`;
+            const res = await generativeModel.generateContent(prompt);
+            const raw = res.response
+              .text()
+              .replace(/^```json\s*/i, "")
+              .replace(/^```\s*/i, "")
+              .replace(/```\s*$/g, "")
+              .trim();
+            const parsed = JSON.parse(raw);
+            return z
+              .object({ subject: z.string().min(1).max(300), body: z.string().min(1).max(8000) })
+              .parse(parsed);
+          },
+          { budgetMs: 26_000, maxAttemptTimeoutMs: 20_000 }
+        );
+        return NextResponse.json(ai);
+      } catch (err) {
+        if (err instanceof AllModelsFailedError) {
+          console.error("Counter-offer Gemini all models failed, using template:", err.message);
+        } else {
+          throw err;
+        }
       }
     }
 

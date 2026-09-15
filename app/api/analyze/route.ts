@@ -9,17 +9,17 @@ import {
 } from "@/lib/analyzer";
 import { adminDb, isAppCheckEnforced, monthStartMs, verifyAppCheckToken, verifyIdToken } from "@/lib/firebaseAdmin";
 import {
-  getGeminiModels,
-  isHardModelError,
-  modelErrorStatus,
-  summarizeModelFailures,
+  AllModelsFailedError,
+  MAX_PROMPT_CHARS,
+  failureSummary,
+  runAcrossModels,
 } from "@/lib/gemini";
+import type { AnalysisResult } from "@/lib/types";
 import { FREE_SCANS_PER_MONTH } from "@/lib/quota";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-const MAX_CHARS = 120_000;
 const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10 MB
 
 async function extractText(req: NextRequest): Promise<{ name: string; text: string }> {
@@ -212,35 +212,43 @@ async function handleAnalyze(req: NextRequest): Promise<Response> {
     console.error("Quota check unavailable, proceeding:", err instanceof Error ? err.message : err);
   }
 
-  // 5. Gemini-only analysis with per-model fallback (primary GEMINI_MODEL → MODEL_FALLBACKS).
+  // 5. Gemini-only analysis with per-model fallback, a hard time budget and a
+//    per-attempt fetch timeout (so we never blow the 60s function cap while
+//    trying several overloaded models).
+  const analysisBudgetMs = 52_000;
   const genAI = new GoogleGenerativeAI(apiKey);
-  const models = getGeminiModels();
-  const truncated = cleaned.slice(0, MAX_CHARS);
+  const startedAt = Date.now();
+  const truncated = cleaned.slice(0, MAX_PROMPT_CHARS);
   const prompt = `Contract filename: ${name}\n\nContract text:\n${truncated}`;
-  const errors: { model: string; message: string }[] = [];
-  for (const model of models) {
-    try {
-      const generativeModel = genAI.getGenerativeModel({
-        model,
-        systemInstruction: GEMINI_SYSTEM_PROMPT,
-        generationConfig: { responseMimeType: "application/json", temperature: 0.2 },
-      });
-      const res = await generativeModel.generateContent(prompt);
-      const raw = res.response.text();
-      const base = parseGeminiResult(raw, name);
-      const result = withTone(base, tone);
-      result.engine = "gemini";
-      return NextResponse.json(result);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      errors.push({ model, message });
-      console.error("Gemini model %s failed:", model, message);
-      if (isHardModelError(message)) break;
+  try {
+    const { value: result } = await runAcrossModels<AnalysisResult>(
+      async (model, timeoutMs) => {
+        const generativeModel = genAI.getGenerativeModel(
+          {
+            model,
+            systemInstruction: GEMINI_SYSTEM_PROMPT,
+            generationConfig: {
+              responseMimeType: "application/json",
+              temperature: 0.2,
+              maxOutputTokens: 8192,
+            },
+          },
+          { timeout: timeoutMs }
+        );
+        const res = await generativeModel.generateContent(prompt);
+        const base = parseGeminiResult(res.response.text(), name);
+        const result = withTone(base, tone);
+        result.engine = "gemini";
+        return result;
+      },
+      { budgetMs: analysisBudgetMs, startedAt }
+    );
+    return NextResponse.json(result);
+  } catch (err) {
+    if (err instanceof AllModelsFailedError) {
+      const { error, status } = failureSummary(err);
+      return NextResponse.json({ error }, { status });
     }
+    throw err;
   }
-  const lastMessage = errors[errors.length - 1]?.message || "unknown";
-  return NextResponse.json(
-    { error: summarizeModelFailures(models, errors) },
-    { status: modelErrorStatus(lastMessage) }
-  );
 }
