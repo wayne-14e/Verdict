@@ -17,8 +17,9 @@
 - Sign-out from `/app` (Profile tab) returns user to the landing page.
 
 ## Stack
-- Next.js 14.2.18 App Router, React 18, TypeScript, Tailwind CSS 3
-- `@google/generative-ai` (**Gemini 3.5 Flash**, default `gemini-3.5-flash`, via **required** `GEMINI_API_KEY` in `.env` — `gemini-1.5-flash` is retired/404), `pdf-parse`, `mammoth`, `lucide-react`, `zod`, `firebase` (client Auth + Firestore), `firebase-admin` (server ID-token verification; **`jwks-rsa` pinned to `2.1.4` via `overrides`** — firebase-admin 14's `jwks-rsa@4` pulls ESM-only `jose@6`, which crashes Vercel's runtime with `ERR_REQUIRE_ESM`; the override restores the CJS `jose@2` chain)
+- Next.js **14.2.35** (App Router, patched from 14.2.18), React 18, TypeScript, Tailwind CSS 3
+- `@google/generative-ai` (**Gemini 3.1-flash-lite** primary, lite-only fallback chain via `lib/gemini.ts`; `GEMINI_MODEL` env overrides), `pdf-parse`, `mammoth`, `lucide-react`, `zod`, `firebase` (client Auth + Firestore), `firebase-admin` (server ID-token verification)
+- Dependency hygiene (via `package.json` `overrides`): `jwks-rsa` pinned to `2.1.4` (firebase-admin 14's `jwks-rsa@4` pulls ESM-only `jose@6`, which crashes Vercel's runtime with `ERR_REQUIRE_ESM`; the override restores the CJS `jose@2` chain). `glob` → `13.0.6` and `uuid` → `11.1.1` (older lines are npm-deprecated/flagged; both keep CommonJS builds so CJS consumers — eslint 8, google-auth/gaxios — keep working).
 - Backend: Firebase project **Verdict** (`verdict-2ef0b`) — Auth (email/password + Google), Firestore `(default)` in `nam5`. No custom servers; Next.js API routes + Firebase.
 - `.env` (gitignored) holds `GEMINI_*` + `NEXT_PUBLIC_FIREBASE_*` + `FIREBASE_PROJECT_ID`; `.env.example` documents all vars. Next.js loads `.env` automatically (build log: `Environments: .env`).
 - Fonts: Inter / Plus Jakarta Sans (sans, semibold headings tracking-tight), JetBrains Mono / Fira Code (mono for legal extracts + redlines) via Google Fonts in `app/layout.tsx`
