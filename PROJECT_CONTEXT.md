@@ -4,6 +4,11 @@
 
 ## Status: FIREBASE BACKEND + APP CHECK WIRED (verified `npm run build`, Firestore rules deployed)
 
+## Auth-gated redirects
+- `/` (landing) redirects to `/app` via `useEffect` + `router.replace("/app")` when user is signed in.
+- While auth is loading or user is signed in, the landing page renders `null` to prevent flash.
+- Sign-out from `/app` (Profile tab) returns user to the landing page.
+
 ## Stack
 - Next.js 14.2.18 App Router, React 18, TypeScript, Tailwind CSS 3
 - `@google/generative-ai` (Gemini 1.5 Flash via **required** `GEMINI_API_KEY` in `.env`), `pdf-parse`, `mammoth`, `lucide-react`, `zod`, `firebase` (client Auth + Firestore), `firebase-admin` (server ID-token verification)

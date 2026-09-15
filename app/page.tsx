@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signOut as fbSignOut } from "firebase/auth";
@@ -149,6 +149,12 @@ export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.replace("/app");
+    }
+  }, [authLoading, user, router]);
+
   const displayName =
     ctxName || user?.email?.split("@")[0] || "Member";
 
@@ -170,6 +176,8 @@ export default function LandingPage() {
       /* noop */
     }
   }
+
+  if (authLoading || user) return null;
 
   return (
     <div className="min-h-screen">
