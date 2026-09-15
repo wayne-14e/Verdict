@@ -2,12 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { z } from "zod";
 import { buildEmail, toneSchema } from "@/lib/analyzer";
+import { getGeminiModels } from "@/lib/gemini";
 import { isAppCheckEnforced, verifyAppCheckToken, verifyIdToken } from "@/lib/firebaseAdmin";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
-
-const DEFAULT_MODEL = "gemini-3.5-flash";
 
 const counterOfferSchema = z.object({
   tone: toneSchema.default("polite"),
@@ -102,12 +101,14 @@ export async function POST(req: NextRequest) {
     const input = parsed.data;
 
     const apiKey = (process.env.GEMINI_API_KEY || "").trim();
-    const model = (process.env.GEMINI_MODEL || DEFAULT_MODEL).trim() || DEFAULT_MODEL;
 
-    // Prefer Gemini (same .env key); fall back to deterministic template of REAL flags.
+    // Prefer Gemini (same .env key) with per-model fallback; fall back to
+    // deterministic template of REAL flags when every model fails.
     if (apiKey) {
-      const ai = await draftWithGemini(apiKey, model, input);
-      if (ai) return NextResponse.json(ai);
+      for (const model of getGeminiModels()) {
+        const ai = await draftWithGemini(apiKey, model, input);
+        if (ai) return NextResponse.json(ai);
+      }
     }
 
     const email = buildEmail(

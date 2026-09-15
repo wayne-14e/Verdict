@@ -8,6 +8,12 @@ import {
   withTone,
 } from "@/lib/analyzer";
 import { adminDb, isAppCheckEnforced, monthStartMs, verifyAppCheckToken, verifyIdToken } from "@/lib/firebaseAdmin";
+import {
+  getGeminiModels,
+  isHardModelError,
+  modelErrorStatus,
+  summarizeModelFailures,
+} from "@/lib/gemini";
 import { FREE_SCANS_PER_MONTH } from "@/lib/quota";
 
 export const runtime = "nodejs";
@@ -15,13 +21,6 @@ export const maxDuration = 60;
 
 const MAX_CHARS = 120_000;
 const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10 MB
-const DEFAULT_MODEL = "gemini-3.5-flash";
-
-function getConfig() {
-  const apiKey = (process.env.GEMINI_API_KEY || "").trim();
-  const model = (process.env.GEMINI_MODEL || DEFAULT_MODEL).trim() || DEFAULT_MODEL;
-  return { apiKey, model };
-}
 
 async function extractText(req: NextRequest): Promise<{ name: string; text: string }> {
   const contentType = req.headers.get("content-type") || "";
@@ -134,7 +133,7 @@ async function handleAnalyze(req: NextRequest): Promise<Response> {
   }
 
   // 1. Gemini API key is required — loaded from .env (Next.js loads .env automatically).
-  const { apiKey, model } = getConfig();
+  const apiKey = (process.env.GEMINI_API_KEY || "").trim();
   if (!apiKey) {
     return NextResponse.json(
       {
@@ -213,44 +212,35 @@ async function handleAnalyze(req: NextRequest): Promise<Response> {
     console.error("Quota check unavailable, proceeding:", err instanceof Error ? err.message : err);
   }
 
-  // 5. Gemini-only analysis — no mock/local fallback
-  try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const generativeModel = genAI.getGenerativeModel({
-      model,
-      systemInstruction: GEMINI_SYSTEM_PROMPT,
-      generationConfig: { responseMimeType: "application/json", temperature: 0.2 },
-    });
-    const truncated = cleaned.slice(0, MAX_CHARS);
-    const res = await generativeModel.generateContent(
-      `Contract filename: ${name}\n\nContract text:\n${truncated}`
-    );
-    const raw = res.response.text();
-    const base = parseGeminiResult(raw, name);
-    const result = withTone(base, tone);
-    result.engine = "gemini";
-    return NextResponse.json(result);
-  } catch (err) {
-    console.error(
-      "Gemini analysis failed (model %s):",
-      model,
-      err instanceof Error ? err.message : err
-    );
-    const detail = err instanceof Error ? err.message : String(err);
-    if (/json|parse|schema|invalid/i.test(detail)) {
-      return NextResponse.json(
-        {
-          error:
-            "AI returned an unexpected format. Please retry — if it persists, try a shorter excerpt.",
-        },
-        { status: 502 }
-      );
+  // 5. Gemini-only analysis with per-model fallback (primary GEMINI_MODEL → MODEL_FALLBACKS).
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const models = getGeminiModels();
+  const truncated = cleaned.slice(0, MAX_CHARS);
+  const prompt = `Contract filename: ${name}\n\nContract text:\n${truncated}`;
+  const errors: { model: string; message: string }[] = [];
+  for (const model of models) {
+    try {
+      const generativeModel = genAI.getGenerativeModel({
+        model,
+        systemInstruction: GEMINI_SYSTEM_PROMPT,
+        generationConfig: { responseMimeType: "application/json", temperature: 0.2 },
+      });
+      const res = await generativeModel.generateContent(prompt);
+      const raw = res.response.text();
+      const base = parseGeminiResult(raw, name);
+      const result = withTone(base, tone);
+      result.engine = "gemini";
+      return NextResponse.json(result);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      errors.push({ model, message });
+      console.error("Gemini model %s failed:", model, message);
+      if (isHardModelError(message)) break;
     }
-    return NextResponse.json(
-      {
-        error: `AI analysis failed (model: ${model || "unset"}). ${detail} — check GEMINI_API_KEY / GEMINI_MODEL.`,
-      },
-      { status: /quota|429|rate/i.test(detail) ? 429 : 502 }
-    );
   }
+  const lastMessage = errors[errors.length - 1]?.message || "unknown";
+  return NextResponse.json(
+    { error: summarizeModelFailures(models, errors) },
+    { status: modelErrorStatus(lastMessage) }
+  );
 }
