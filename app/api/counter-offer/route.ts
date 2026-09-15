@@ -7,7 +7,7 @@ import { isAppCheckEnforced, verifyAppCheckToken, verifyIdToken } from "@/lib/fi
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
-const DEFAULT_MODEL = "gemini-1.5-flash";
+const DEFAULT_MODEL = "gemini-3.5-flash";
 
 const counterOfferSchema = z.object({
   tone: toneSchema.default("polite"),

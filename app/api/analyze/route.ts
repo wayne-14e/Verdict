@@ -15,7 +15,7 @@ export const maxDuration = 60;
 
 const MAX_CHARS = 120_000;
 const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10 MB
-const DEFAULT_MODEL = "gemini-1.5-flash";
+const DEFAULT_MODEL = "gemini-3.5-flash";
 
 function getConfig() {
   const apiKey = (process.env.GEMINI_API_KEY || "").trim();
@@ -83,6 +83,18 @@ async function extractText(req: NextRequest): Promise<{ name: string; text: stri
 }
 
 export async function POST(req: NextRequest) {
+  try {
+    return await handleAnalyze(req);
+  } catch (err) {
+    console.error("Unhandled analyze error:", err instanceof Error ? err.stack : err);
+    return NextResponse.json(
+      { error: "Unexpected server error. Please try again." },
+      { status: 500 }
+    );
+  }
+}
+
+async function handleAnalyze(req: NextRequest): Promise<Response> {
   // 0. Firebase Auth is required for every scan.
   const idToken = (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "").trim();
   if (!idToken) {

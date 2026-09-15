@@ -76,7 +76,7 @@ or Production + Preview as you prefer):
 | Variable | Required? | Notes |
 |---|---|---|
 | `GEMINI_API_KEY` | Yes | Server-only; never expose to the browser |
-| `GEMINI_MODEL` | No | Defaults to `gemini-1.5-flash` if unset |
+| `GEMINI_MODEL` | No | Defaults to `gemini-3.5-flash` if unset |
 | `NEXT_PUBLIC_FIREBASE_API_KEY` | Yes | Bake-in at build time — redeploy after changing |
 | `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | Yes | Same as above |
 | `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | Yes | Same as above |

@@ -26,7 +26,7 @@ import { signOut as fbSignOut, updateProfile } from "firebase/auth";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { cn } from "@/lib/utils";
 import { SAMPLES } from "@/lib/samples";
-import type { AnalysisResult, Category, Severity, Tone } from "@/lib/types";
+import type { AnalysisResult, Category, EmailTemplate, Severity, Tone } from "@/lib/types";
 import { ReportView } from "@/components/ReportView";
 import { AuthModal, type AuthMode } from "@/components/AuthModal";
 import { useAuth } from "@/components/AuthProvider";
@@ -153,6 +153,23 @@ export default function AnalyzePage() {
     return { ...h, ...(await getAppCheckHeader()) };
   }
 
+  // Guard against non-JSON bodies (e.g. a platform HTML error page) so the UI
+  // shows a readable message instead of "Unexpected token '<'...".
+  async function responseError(res: Response): Promise<string> {
+    const ct = res.headers.get("content-type") || "";
+    if (ct.includes("application/json")) {
+      try {
+        const d = (await res.json()) as { error?: string };
+        if (d && typeof d.error === "string" && d.error.trim()) return d.error;
+      } catch {
+        /* fall through to raw text */
+      }
+    }
+    if (res.status >= 500) return "Server error — please try again in a moment.";
+    const raw = (await res.text().catch(() => "")).trim();
+    return raw.slice(0, 200) || "Request failed. Please try again.";
+  }
+
   async function analyze(payload: FormData | { text: string; contractName: string }, nextTone: Tone) {
     if (!requireAuth() || !uid) return;
     setLoading(true);
@@ -172,13 +189,13 @@ export default function AnalyzePage() {
           body: JSON.stringify(payload),
         });
       }
-      const data = await res.json();
       if (res.status === 401) {
         setAuthMode("signin");
         setAuthOpen(true);
         throw new Error("Your session expired. Please sign in again.");
       }
-      if (!res.ok) throw new Error(data.error || "Analysis failed");
+      if (!res.ok) throw new Error(await responseError(res));
+      const data = await res.json();
       const parsed = data as AnalysisResult;
       setResult(parsed);
       setSelectedScanId(null);
@@ -251,8 +268,11 @@ export default function AnalyzePage() {
           flags: result.flags,
         }),
       });
-      const data = await res.json();
-      if (res.ok) setResult({ ...result, emailTemplate: data });
+      if (!res.ok) throw new Error(await responseError(res));
+      const data = (await res.json()) as EmailTemplate;
+      setResult({ ...result, emailTemplate: data });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not regenerate the email. Try again.");
     } finally {
       setRegen(false);
     }
