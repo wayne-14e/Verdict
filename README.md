@@ -18,7 +18,7 @@ AI-powered contract analysis for freelancers: upload any client agreement and ge
 |---|---|
 | Framework | Next.js 14 (App Router), React 18, TypeScript |
 | Styling | Tailwind CSS 3, custom dark design tokens, Lucide icons |
-| AI engine | Gemini 1.5 Flash via `@google/generative-ai` (sole engine — no mock fallback) |
+| AI engine | Gemini 3.5 Flash via `@google/generative-ai` (sole engine — no mock fallback) |
 | Backend | Firebase (Auth + Firestore) on project `verdict-2ef0b` |
 | Server auth | `firebase-admin` ID-token + App Check verification in API routes |
 | Validation | Zod on every API input and on Gemini's structured output |
