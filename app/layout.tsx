@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeSwitch } from "@/components/ThemeSwitch";
 
 export const metadata: Metadata = {
   title: "Verdict — Know what you're signing before you sign",
@@ -10,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="light" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -19,8 +21,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-[#0F172A] font-sans text-slate-100 antialiased">
-        <AuthProvider>{children}</AuthProvider>
+      <body className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans antialiased dark:bg-[#0F172A] dark:text-slate-100">
+        <ThemeProvider>
+          <AuthProvider>
+            {children}
+            <ThemeSwitch />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -214,10 +214,10 @@ export function AuthModal({
               <Gavel className="h-5 w-5" />
             </span>
             <div>
-              <p className="text-base font-semibold leading-tight tracking-tight text-white">
+              <p className="text-base font-semibold leading-tight tracking-tight text-slate-900 dark:text-white">
                 {isSignup ? "Create your account" : "Welcome back"}
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {isSignup ? "Start analyzing contracts in seconds." : "Pick up where you left off."}
               </p>
             </div>
@@ -225,14 +225,14 @@ export function AuthModal({
           <button
             onClick={onClose}
             aria-label="Close"
-            className="rounded-lg p-1.5 text-slate-400 transition hover:bg-white/5 hover:text-white"
+            className="rounded-lg p-1.5 text-slate-500 dark:text-slate-400 transition hover:bg-slate-900/10 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Mode tabs */}
-        <div className="mt-5 grid grid-cols-2 gap-1 rounded-xl border border-slate-700/60 bg-[#0F172A] p-1">
+        <div className="mt-5 grid grid-cols-2 gap-1 rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-[#0F172A] p-1">
           {(["signup", "signin"] as const).map((m) => (
             <button
               key={m}
@@ -242,7 +242,7 @@ export function AuthModal({
               }}
               className={cn(
                 "rounded-lg px-3 py-2 text-sm font-semibold transition",
-                mode === m ? "bg-[#6366F1] text-white" : "text-slate-300 hover:text-white"
+                mode === m ? "bg-[#6366F1] text-white" : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
               )}
               style={mode === m ? { boxShadow: "0 0 16px rgba(99,102,241,0.35)" } : undefined}
             >
@@ -261,14 +261,14 @@ export function AuthModal({
         </button>
 
         <div className="my-4 flex items-center gap-3 text-xs text-slate-500">
-          <span className="h-px flex-1 bg-slate-700/60" /> or with email{" "}
-          <span className="h-px flex-1 bg-slate-700/60" />
+          <span className="h-px flex-1 bg-slate-200 dark:bg-slate-700/60" /> or with email{" "}
+          <span className="h-px flex-1 bg-slate-200 dark:bg-slate-700/60" />
         </div>
 
         <div className="space-y-3">
           {isSignup && (
             <div>
-              <label htmlFor="auth-name" className="text-sm font-semibold text-slate-200">
+              <label htmlFor="auth-name" className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                 Full name
               </label>
               <input
@@ -278,12 +278,12 @@ export function AuthModal({
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Alex Rivera"
                 autoComplete="name"
-                className="mt-1.5 w-full rounded-xl border border-slate-700/60 bg-[#0F172A] px-3.5 py-2.5 text-sm text-slate-100 placeholder:text-slate-500"
+                className="mt-1.5 w-full rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-[#0F172A] px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-500"
               />
             </div>
           )}
           <div>
-            <label htmlFor="auth-email" className="text-sm font-semibold text-slate-200">
+            <label htmlFor="auth-email" className="text-sm font-semibold text-slate-700 dark:text-slate-200">
               Email
             </label>
             <input
@@ -293,18 +293,18 @@ export function AuthModal({
               onChange={(e) => setEmail(e.target.value)}
               placeholder="alex@studio.co"
               autoComplete="email"
-              className="mt-1.5 w-full rounded-xl border border-slate-700/60 bg-[#0F172A] px-3.5 py-2.5 text-sm text-slate-100 placeholder:text-slate-500"
+              className="mt-1.5 w-full rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-[#0F172A] px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-500"
             />
           </div>
           <div>
             <div className="flex items-center justify-between">
-              <label htmlFor="auth-password" className="text-sm font-semibold text-slate-200">
+              <label htmlFor="auth-password" className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                 Password
               </label>
               {isSignup && (
                 <button
                   onClick={generatePassword}
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#a5b4fc] hover:underline"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#6366F1] dark:text-[#a5b4fc] hover:underline"
                 >
                   <KeyRound className="h-3.5 w-3.5" /> Generate
                 </button>
@@ -319,12 +319,12 @@ export function AuthModal({
                 onKeyDown={(e) => e.key === "Enter" && submitEmail()}
                 placeholder="Minimum 6 characters"
                 autoComplete={isSignup ? "new-password" : "current-password"}
-                className="w-full rounded-xl border border-slate-700/60 bg-[#0F172A] px-3.5 py-2.5 pr-11 text-sm text-slate-100 placeholder:text-slate-500"
+                className="w-full rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-[#0F172A] px-3.5 py-2.5 pr-11 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-500"
               />
               <button
                 onClick={() => setShowPassword((v) => !v)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-400 transition hover:bg-white/5 hover:text-white"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-500 dark:text-slate-400 transition hover:bg-slate-900/10 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white"
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
@@ -334,7 +334,7 @@ export function AuthModal({
                 <button
                   onClick={sendReset}
                   disabled={busy}
-                  className="text-xs font-semibold text-[#a5b4fc] hover:underline disabled:opacity-50"
+                  className="text-xs font-semibold text-[#6366F1] dark:text-[#a5b4fc] hover:underline disabled:opacity-50"
                 >
                   {loading === "reset" ? "Sending…" : "Forgot password?"}
                 </button>

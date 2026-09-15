@@ -50,15 +50,15 @@ export const ReportView = forwardRef<HTMLDivElement, ReportViewProps>(function R
   return (
     <div ref={ref} className="mt-8 scroll-mt-6 space-y-4">
       <div className="card p-5 sm:p-6">
-        <p className="text-xs font-bold uppercase tracking-widest text-slate-400">
+        <p className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
           Verdict Health Index
         </p>
         <div className="mt-3 flex flex-wrap items-start justify-between gap-6">
           <div className="min-w-0 flex-1">
-            <h2 className="mt-1 font-mono text-lg font-medium tracking-tight text-white">
+            <h2 className="mt-1 font-mono text-lg font-medium tracking-tight text-slate-900 dark:text-white">
               {result.contractName}
             </h2>
-            <p className="mt-1 text-sm font-semibold text-slate-200">
+            <p className="mt-1 text-sm font-semibold text-slate-700 dark:text-slate-200">
               Overall Risk:{" "}
               {result.overallRiskScore >= 70
                 ? "SAFE"
@@ -67,14 +67,14 @@ export const ReportView = forwardRef<HTMLDivElement, ReportViewProps>(function R
                   : "HIGH RISK"}{" "}
               ({result.overallRiskScore}/100)
             </p>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-300">
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">
               {result.riskSummary}
             </p>
             <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold">
               <span className="chip badge-red">● {reds} Red Flags</span>
               <span className="chip badge-yellow">● {yellows} Yellow Flags</span>
               <span className="chip badge-green">● {greens} Safe Clauses</span>
-              <span className="chip border-slate-700/60 bg-white/5 text-slate-400">
+              <span className="chip border-slate-300 dark:border-slate-700/60 bg-slate-900/5 dark:bg-white/5 text-slate-500 dark:text-slate-400">
                 Gemini AI engine
               </span>
             </div>
@@ -87,7 +87,7 @@ export const ReportView = forwardRef<HTMLDivElement, ReportViewProps>(function R
         <div className="space-y-3 lg:col-span-2">
           {/* Filters */}
           <div className="card flex flex-wrap items-center gap-2 p-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Severity:
             </span>
             {(["ALL", "RED", "YELLOW", "GREEN"] as const).map((s) => (
@@ -98,19 +98,19 @@ export const ReportView = forwardRef<HTMLDivElement, ReportViewProps>(function R
                   "rounded-full border px-3 py-1 text-xs font-semibold transition",
                   sevFilter === s
                     ? "border-[#6366F1] bg-[#6366F1] text-white"
-                    : "border-slate-700/60 text-slate-300 hover:border-slate-500"
+                    : "border-slate-300 dark:border-slate-700/60 text-slate-600 dark:text-slate-300 hover:border-slate-400 dark:hover:border-slate-500"
                 )}
               >
                 {s === "ALL" ? "All" : s}
               </button>
             ))}
-            <span className="ml-2 text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="ml-2 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Category:
             </span>
             <select
               value={catFilter}
               onChange={(e) => onCatFilter(e.target.value as Category | "ALL")}
-              className="rounded-lg border border-slate-700/60 bg-[#0F172A] px-2 py-1 text-xs font-medium text-slate-200"
+              className="rounded-lg border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-[#0F172A] px-2 py-1 text-xs font-medium text-slate-700 dark:text-slate-200"
             >
               {CATEGORIES.map((c) => (
                 <option key={c} value={c}>
@@ -121,7 +121,7 @@ export const ReportView = forwardRef<HTMLDivElement, ReportViewProps>(function R
           </div>
 
           {filtered.length === 0 ? (
-            <div className="card flex items-center gap-2 p-6 text-sm text-slate-300">
+            <div className="card flex items-center gap-2 p-6 text-sm text-slate-600 dark:text-slate-300">
               <ShieldCheck className="h-5 w-5 text-[#10B981]" />
               No flags match this filter — the contract is clean in this slice.
             </div>

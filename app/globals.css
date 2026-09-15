@@ -3,15 +3,39 @@
 @tailwind utilities;
 
 :root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --brand: #6366f1;
+  --brand-hover: #4f46e5;
+  --border: rgba(15, 23, 42, 0.1);
+  --border-strong: rgba(15, 23, 42, 0.2);
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --risk-red: #dc2626;
+  --risk-red-bg: #fef2f2;
+  --risk-amber: #b45309;
+  --risk-amber-bg: #fffbeb;
+  --risk-green: #059669;
+  --risk-green-bg: #f0fdf4;
+  --gauge-track: #e2e8f0;
+}
+
+.dark {
   --bg: #0f172a;
   --card: #1e293b;
   --brand: #6366f1;
+  --brand-hover: #5457e5;
+  --border: rgba(148, 163, 184, 0.2);
+  --border-strong: rgba(148, 163, 184, 0.4);
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
   --risk-red: #ef4444;
   --risk-red-bg: #451a1a;
   --risk-amber: #f59e0b;
   --risk-amber-bg: #453006;
   --risk-green: #10b981;
   --risk-green-bg: #064e3b;
+  --gauge-track: #334155;
 }
 
 html,
@@ -21,9 +45,10 @@ body {
 
 body {
   background: var(--bg);
-  color: #f1f5f9;
+  color: var(--text);
   font-family: Inter, "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   font-feature-settings: "cv11", "ss01";
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1,
@@ -34,7 +59,13 @@ h3 {
 }
 
 .card {
-  @apply rounded-xl border border-slate-700/50 bg-[#1E293B] shadow-sm;
+  @apply rounded-xl border shadow-sm;
+  background: var(--card);
+  border-color: var(--border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.dark .card {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
@@ -44,32 +75,51 @@ h3 {
 }
 
 .btn-ghost {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700/60 bg-transparent px-4 py-2.5 text-sm font-medium text-slate-300 transition hover:border-slate-500 hover:bg-white/5;
+  @apply inline-flex items-center justify-center gap-2 rounded-lg border bg-transparent px-4 py-2.5 text-sm font-medium transition;
+  border-color: var(--border-strong);
+  color: var(--text-muted);
+}
+
+.btn-ghost:hover {
+  border-color: var(--brand);
+  background: rgba(99, 102, 241, 0.06);
 }
 
 .chip {
   @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide;
 }
 
-/* Risk badges — high-contrast visibility on dark */
+/* Risk badges — high-contrast visibility */
 .badge-red {
-  color: #ef4444;
+  color: var(--risk-red);
+  border-color: var(--risk-red);
+  background: var(--risk-red-bg);
+}
+
+.dark .badge-red {
   border-color: rgba(239, 68, 68, 0.4);
-  background: #451a1a;
   box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
 }
 
 .badge-yellow {
-  color: #f59e0b;
+  color: var(--risk-amber);
+  border-color: var(--risk-amber);
+  background: var(--risk-amber-bg);
+}
+
+.dark .badge-yellow {
   border-color: rgba(245, 158, 11, 0.4);
-  background: #453006;
   box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
 }
 
 .badge-green {
-  color: #10b981;
+  color: var(--risk-green);
+  border-color: var(--risk-green);
+  background: var(--risk-green-bg);
+}
+
+.dark .badge-green {
   border-color: rgba(16, 185, 129, 0.4);
-  background: #064e3b;
   box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
 }
 
@@ -82,6 +132,11 @@ select:focus {
 
 textarea,
 select {
+  color-scheme: light;
+}
+
+.dark textarea,
+.dark select {
   color-scheme: dark;
 }
 

@@ -182,7 +182,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen">
       {/* ── Sticky header ─────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 border-b border-slate-700/50 bg-[#0F172A]/85 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-md dark:border-slate-700/50 dark:bg-[#0F172A]/85">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="flex items-center gap-2.5">
             <span
@@ -192,10 +192,10 @@ export default function LandingPage() {
               <Gavel className="h-5 w-5" />
             </span>
             <div>
-              <p className="text-base font-semibold leading-tight tracking-tight text-white">
+              <p className="text-base font-semibold leading-tight tracking-tight text-slate-900 dark:text-white">
                 Verdict
               </p>
-              <p className="hidden text-xs text-slate-400 sm:block">
+              <p className="hidden text-xs text-slate-500 dark:text-slate-400 sm:block">
                 Know what you&apos;re signing before you sign.
               </p>
             </div>
@@ -206,7 +206,7 @@ export default function LandingPage() {
               <a
                 key={l.href}
                 href={l.href}
-                className="text-sm font-medium text-slate-300 transition hover:text-white"
+                className="text-sm font-medium text-slate-600 dark:text-slate-300 transition hover:text-slate-900 dark:hover:text-white"
               >
                 {l.label}
               </a>
@@ -216,7 +216,7 @@ export default function LandingPage() {
           <div className="hidden items-center gap-2 lg:flex">
             {authLoading ? null : user ? (
               <>
-                <span className="chip border-slate-700/60 bg-white/5 normal-case text-slate-200">
+                <span className="chip border-slate-300 dark:border-slate-700/60 bg-slate-900/5 dark:bg-white/5 normal-case text-slate-700 dark:text-slate-200">
                   <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#6366F1] text-[11px] font-bold text-white">
                     {displayName.charAt(0).toUpperCase()}
                   </span>
@@ -228,7 +228,7 @@ export default function LandingPage() {
                 <button
                   onClick={signOut}
                   aria-label="Sign out"
-                  className="rounded-lg p-2 text-slate-400 transition hover:bg-white/5 hover:text-white"
+                  className="rounded-lg p-2 text-slate-500 dark:text-slate-400 transition hover:bg-slate-900/10 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white"
                 >
                   <LogOut className="h-4 w-4" />
                 </button>
@@ -246,7 +246,7 @@ export default function LandingPage() {
           </div>
 
           <button
-            className="rounded-lg p-2 text-slate-300 hover:bg-white/5 lg:hidden"
+            className="rounded-lg p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-900/10 dark:hover:bg-white/5 lg:hidden"
             aria-label="Toggle menu"
             onClick={() => setMenuOpen((v) => !v)}
           >
@@ -255,14 +255,14 @@ export default function LandingPage() {
         </div>
 
         {menuOpen && (
-          <div className="border-t border-slate-700/50 px-4 py-3 lg:hidden">
+          <div className="border-t border-slate-200 dark:border-slate-700/50 px-4 py-3 lg:hidden">
             <nav className="flex flex-col gap-1">
               {NAV.map((l) => (
                 <a
                   key={l.href}
                   href={l.href}
                   onClick={() => setMenuOpen(false)}
-                  className="rounded-lg px-3 py-2 text-sm font-medium text-slate-200 hover:bg-white/5"
+                  className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-900/10 dark:hover:bg-white/5"
                 >
                   {l.label}
                 </a>
@@ -292,14 +292,14 @@ export default function LandingPage() {
         {/* ── Hero ────────────────────────────────────────────────── */}
         <section className="grid items-center gap-8 pb-14 pt-12 lg:grid-cols-2 lg:pt-20">
           <div>
-            <span className="chip border-[#6366F1]/40 bg-[#6366F1]/10 text-[#a5b4fc]">
+            <span className="chip border-[#6366F1]/40 bg-[#6366F1]/10 text-[#6366F1] dark:text-[#a5b4fc]">
               <Sparkles className="h-3.5 w-3.5" /> AI-powered contract intelligence
             </span>
-            <h1 className="mt-4 text-4xl font-semibold leading-[1.1] tracking-tight text-white sm:text-5xl">
+            <h1 className="mt-4 text-4xl font-semibold leading-[1.1] tracking-tight text-slate-900 dark:text-white sm:text-5xl">
               Know what you&apos;re signing{" "}
-              <span className="text-[#a5b4fc]">before you sign.</span>
+              <span className="text-[#6366F1] dark:text-[#a5b4fc]">before you sign.</span>
             </h1>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-600 dark:text-slate-300 sm:text-lg">
               Upload any client agreement. Verdict flags hidden payment traps, IP grabs, and
               liability landmines — translates legalese into plain English — and drafts your
               counter-offer in seconds.
@@ -316,7 +316,7 @@ export default function LandingPage() {
               {["Net-90 detection", "IP overreach", "Liability caps", "Non-competes"].map((t) => (
                 <span
                   key={t}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 font-medium text-slate-200 ring-1 ring-slate-700/60"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-slate-900/5 dark:bg-white/5 px-3 py-1.5 font-medium text-slate-700 dark:text-slate-200 ring-1 ring-slate-200 dark:ring-slate-700/60"
                 >
                   <Check className="h-3.5 w-3.5 text-[#10B981]" /> {t}
                 </span>
@@ -327,10 +327,10 @@ export default function LandingPage() {
           {/* Illustrative preview (static marketing visual, not an analysis) */}
           <div className="card rise p-5 sm:p-6">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-bold uppercase tracking-widest text-slate-400">
+              <p className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                 Verdict Health Index
               </p>
-              <span className="chip border-slate-700/60 bg-white/5 text-slate-400">
+              <span className="chip border-slate-300 dark:border-slate-700/60 bg-slate-900/5 dark:bg-white/5 text-slate-500 dark:text-slate-400">
                 Illustrative preview
               </span>
             </div>
@@ -338,25 +338,25 @@ export default function LandingPage() {
               <ScoreGauge score={28} />
             </div>
             <div className="mt-4 space-y-2">
-              <div className="flex items-center gap-2 rounded-xl border border-[#EF4444]/30 bg-[#451A1A]/60 px-3 py-2.5 text-sm">
+              <div className="flex items-center gap-2 rounded-xl border border-[#EF4444]/30 bg-[#FEF2F2] dark:bg-[#451A1A]/60 px-3 py-2.5 text-sm">
                 <ShieldAlert className="h-4 w-4 shrink-0 text-[#EF4444]" />
-                <span className="font-medium text-slate-100">Net-90 payment terms</span>
+                <span className="font-medium text-slate-900 dark:text-slate-100">Net-90 payment terms</span>
                 <span className="chip badge-red ml-auto">Red flag</span>
               </div>
-              <div className="flex items-center gap-2 rounded-xl border border-[#EF4444]/30 bg-[#451A1A]/60 px-3 py-2.5 text-sm">
+              <div className="flex items-center gap-2 rounded-xl border border-[#EF4444]/30 bg-[#FEF2F2] dark:bg-[#451A1A]/60 px-3 py-2.5 text-sm">
                 <ShieldAlert className="h-4 w-4 shrink-0 text-[#EF4444]" />
-                <span className="font-medium text-slate-100">Unlimited liability</span>
+                <span className="font-medium text-slate-900 dark:text-slate-100">Unlimited liability</span>
                 <span className="chip badge-red ml-auto">Red flag</span>
               </div>
-              <div className="flex items-center gap-2 rounded-xl border border-[#10B981]/30 bg-[#064E3B]/40 px-3 py-2.5 text-sm">
+              <div className="flex items-center gap-2 rounded-xl border border-[#10B981]/30 bg-[#F0FDF4] dark:bg-[#064E3B]/40 px-3 py-2.5 text-sm">
                 <ShieldCheck className="h-4 w-4 shrink-0 text-[#10B981]" />
-                <span className="font-medium text-slate-100">Mutual confidentiality</span>
+                <span className="font-medium text-slate-900 dark:text-slate-100">Mutual confidentiality</span>
                 <span className="chip badge-green ml-auto">Safe</span>
               </div>
             </div>
             <Link
               href="/app"
-              className="mt-4 flex items-center justify-center gap-1.5 text-sm font-semibold text-[#a5b4fc] underline-offset-2 hover:underline"
+              className="mt-4 flex items-center justify-center gap-1.5 text-sm font-semibold text-[#6366F1] dark:text-[#a5b4fc] underline-offset-2 hover:underline"
             >
               Run a real analysis in the app <ArrowRight className="h-4 w-4" />
             </Link>
@@ -367,28 +367,28 @@ export default function LandingPage() {
         <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           {STATS.map((s) => (
             <div key={s.label} className="card p-4 text-center sm:p-5">
-              <p className="text-lg font-semibold tracking-tight text-white sm:text-xl">{s.value}</p>
-              <p className="mt-1 text-xs text-slate-400 sm:text-sm">{s.label}</p>
+              <p className="text-lg font-semibold tracking-tight text-slate-900 dark:text-white sm:text-xl">{s.value}</p>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">{s.label}</p>
             </div>
           ))}
         </section>
 
         {/* ── Features ────────────────────────────────────────────── */}
         <section id="features" className="scroll-mt-20 pt-16 sm:pt-20">
-          <p className="text-xs font-bold uppercase tracking-widest text-[#a5b4fc]">
+          <p className="text-xs font-bold uppercase tracking-widest text-[#6366F1] dark:text-[#a5b4fc]">
             Features
           </p>
-          <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             Everything between “looks fine” and signing with confidence.
           </h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map((f) => (
               <div key={f.title} className="card p-5">
-                <span className="inline-flex rounded-xl border border-[#6366F1]/40 bg-[#6366F1]/10 p-2 text-[#a5b4fc]">
+                <span className="inline-flex rounded-xl border border-[#6366F1]/40 bg-[#6366F1]/10 p-2 text-[#6366F1] dark:text-[#a5b4fc]">
                   <f.icon className="h-5 w-5" />
                 </span>
-                <h3 className="mt-3 font-semibold tracking-tight text-slate-100">{f.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-slate-400">{f.body}</p>
+                <h3 className="mt-3 font-semibold tracking-tight text-slate-900 dark:text-slate-100">{f.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">{f.body}</p>
               </div>
             ))}
           </div>
@@ -396,18 +396,18 @@ export default function LandingPage() {
 
         {/* ── How it works ────────────────────────────────────────── */}
         <section id="how" className="scroll-mt-20 pt-16 sm:pt-20">
-          <p className="text-xs font-bold uppercase tracking-widest text-[#a5b4fc]">
+          <p className="text-xs font-bold uppercase tracking-widest text-[#6366F1] dark:text-[#a5b4fc]">
             How it works
           </p>
-          <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             From upload to counter-offer in three steps.
           </h2>
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {STEPS.map((s) => (
               <div key={s.n} className="card p-6">
                 <p className="font-mono text-sm font-semibold text-[#6366F1]">{s.n}</p>
-                <h3 className="mt-2 text-lg font-semibold tracking-tight text-white">{s.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-slate-400">{s.body}</p>
+                <h3 className="mt-2 text-lg font-semibold tracking-tight text-slate-900 dark:text-white">{s.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">{s.body}</p>
               </div>
             ))}
           </div>
@@ -415,13 +415,13 @@ export default function LandingPage() {
 
         {/* ── Samples ─────────────────────────────────────────────── */}
         <section id="samples" className="scroll-mt-20 pt-16 sm:pt-20">
-          <p className="text-xs font-bold uppercase tracking-widest text-[#a5b4fc]">
+          <p className="text-xs font-bold uppercase tracking-widest text-[#6366F1] dark:text-[#a5b4fc]">
             Live demo
           </p>
-          <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             No contract handy? Try a pre-loaded demo.
           </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-400 sm:text-base">
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-500 dark:text-slate-400 sm:text-base">
             Each sample opens in the analyzer and is scored live by Gemini — nothing is
             pre-baked.
           </p>
@@ -430,14 +430,14 @@ export default function LandingPage() {
               <Link
                 key={s.id}
                 href="/app"
-                className="card group p-5 transition hover:border-slate-500"
+                className="card group p-5 transition hover:border-slate-400 dark:hover:border-slate-500"
               >
-                <span className="inline-flex rounded-xl border border-[#6366F1]/40 bg-[#6366F1]/10 p-2 text-[#a5b4fc]">
+                <span className="inline-flex rounded-xl border border-[#6366F1]/40 bg-[#6366F1]/10 p-2 text-[#6366F1] dark:text-[#a5b4fc]">
                   <FileText className="h-5 w-5" />
                 </span>
-                <p className="mt-3 font-semibold tracking-tight text-slate-100">{s.title}</p>
-                <p className="mt-1 text-xs text-slate-400">{s.tagline}</p>
-                <p className="mt-3 text-xs font-semibold text-[#a5b4fc] underline-offset-2 group-hover:underline">
+                <p className="mt-3 font-semibold tracking-tight text-slate-900 dark:text-slate-100">{s.title}</p>
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{s.tagline}</p>
+                <p className="mt-3 text-xs font-semibold text-[#6366F1] dark:text-[#a5b4fc] underline-offset-2 group-hover:underline">
                   Open in analyzer →
                 </p>
               </Link>
@@ -447,20 +447,20 @@ export default function LandingPage() {
 
         {/* ── Personas ────────────────────────────────────────────── */}
         <section className="pt-16 sm:pt-20">
-          <p className="text-xs font-bold uppercase tracking-widest text-[#a5b4fc]">
+          <p className="text-xs font-bold uppercase tracking-widest text-[#6366F1] dark:text-[#a5b4fc]">
             Who it&apos;s for
           </p>
-          <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             Built for independent workers.
           </h2>
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {PERSONAS.map((p) => (
               <div key={p.title} className="card p-5">
-                <span className="inline-flex rounded-xl border border-[#6366F1]/40 bg-[#6366F1]/10 p-2 text-[#a5b4fc]">
+                <span className="inline-flex rounded-xl border border-[#6366F1]/40 bg-[#6366F1]/10 p-2 text-[#6366F1] dark:text-[#a5b4fc]">
                   <p.icon className="h-5 w-5" />
                 </span>
-                <h3 className="mt-3 font-semibold tracking-tight text-slate-100">{p.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-slate-400">{p.body}</p>
+                <h3 className="mt-3 font-semibold tracking-tight text-slate-900 dark:text-slate-100">{p.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">{p.body}</p>
               </div>
             ))}
           </div>
@@ -468,18 +468,18 @@ export default function LandingPage() {
 
         {/* ── Pricing ─────────────────────────────────────────────── */}
         <section id="pricing" className="scroll-mt-20 pt-16 sm:pt-20">
-          <p className="text-xs font-bold uppercase tracking-widest text-[#a5b4fc]">Pricing</p>
-          <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          <p className="text-xs font-bold uppercase tracking-widest text-[#6366F1] dark:text-[#a5b4fc]">Pricing</p>
+          <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             Cheaper than one billable hour with a lawyer.
           </h2>
           <div className="mt-8 grid gap-4 lg:grid-cols-2">
             <div className="card p-6 sm:p-8">
-              <p className="text-sm font-bold uppercase tracking-wider text-slate-400">Free</p>
-              <p className="mt-2 text-4xl font-semibold tracking-tight text-white">
+              <p className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Free</p>
+              <p className="mt-2 text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">
                 $0
-                <span className="text-base font-normal text-slate-400"> / month</span>
+                <span className="text-base font-normal text-slate-500 dark:text-slate-400"> / month</span>
               </p>
-              <ul className="mt-5 space-y-2.5 text-sm text-slate-300">
+              <ul className="mt-5 space-y-2.5 text-sm text-slate-600 dark:text-slate-300">
                 {[
                   "4 contract scans per month",
                   "Health Index score + flag breakdown",
@@ -502,12 +502,12 @@ export default function LandingPage() {
               <span className="absolute -top-3 left-6 rounded-full bg-[#6366F1] px-3 py-1 text-xs font-bold text-white">
                 MOST POPULAR
               </span>
-              <p className="text-sm font-bold uppercase tracking-wider text-[#a5b4fc]">Pro</p>
-              <p className="mt-2 text-4xl font-semibold tracking-tight text-white">
+              <p className="text-sm font-bold uppercase tracking-wider text-[#6366F1] dark:text-[#a5b4fc]">Pro</p>
+              <p className="mt-2 text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">
                 $15
-                <span className="text-base font-normal text-slate-400"> / month</span>
+                <span className="text-base font-normal text-slate-500 dark:text-slate-400"> / month</span>
               </p>
-              <ul className="mt-5 space-y-2.5 text-sm text-slate-300">
+              <ul className="mt-5 space-y-2.5 text-sm text-slate-600 dark:text-slate-300">
                 {[
                   "Unlimited contract scans",
                   "1-click counter-offer emails (3 tones)",
@@ -532,8 +532,8 @@ export default function LandingPage() {
 
         {/* ── FAQ ─────────────────────────────────────────────────── */}
         <section id="faq" className="scroll-mt-20 pt-16 sm:pt-20">
-          <p className="text-xs font-bold uppercase tracking-widest text-[#a5b4fc]">FAQ</p>
-          <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          <p className="text-xs font-bold uppercase tracking-widest text-[#6366F1] dark:text-[#a5b4fc]">FAQ</p>
+          <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             Questions, answered.
           </h2>
           <div className="mt-8 space-y-3">
@@ -545,16 +545,16 @@ export default function LandingPage() {
                     onClick={() => setOpenFaq(open ? null : i)}
                     className="flex w-full items-center justify-between gap-3 p-4 text-left sm:p-5"
                   >
-                    <span className="font-semibold tracking-tight text-slate-100">{f.q}</span>
+                    <span className="font-semibold tracking-tight text-slate-900 dark:text-slate-100">{f.q}</span>
                     <ChevronDown
                       className={cn(
-                        "h-4 w-4 shrink-0 text-slate-400 transition",
+                        "h-4 w-4 shrink-0 text-slate-500 dark:text-slate-400 transition",
                         open && "rotate-180"
                       )}
                     />
                   </button>
                   {open && (
-                    <p className="border-t border-slate-700/50 px-4 py-4 text-sm leading-relaxed text-slate-300 sm:px-5">
+                    <p className="border-t border-slate-200 dark:border-slate-700/50 px-4 py-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:px-5">
                       {f.a}
                     </p>
                   )}
@@ -570,13 +570,13 @@ export default function LandingPage() {
             className="card p-8 text-center sm:p-12"
             style={{ boxShadow: "0 0 32px rgba(99,102,241,0.20)" }}
           >
-            <span className="chip mx-auto border-[#6366F1]/40 bg-[#6366F1]/10 text-[#a5b4fc]">
+            <span className="chip mx-auto border-[#6366F1]/40 bg-[#6366F1]/10 text-[#6366F1] dark:text-[#a5b4fc]">
               <Lock className="h-3.5 w-3.5" /> Don&apos;t sign blind
             </span>
-            <h2 className="mx-auto mt-4 max-w-xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            <h2 className="mx-auto mt-4 max-w-xl text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
               Your next contract could cost you thousands. Read it first.
             </h2>
-            <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-slate-400 sm:text-base">
+            <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-slate-500 dark:text-slate-400 sm:text-base">
               Join Verdict free, upload your first agreement, and see exactly what you&apos;re
               signing — before you sign it.
             </p>
@@ -593,7 +593,7 @@ export default function LandingPage() {
       </main>
 
       {/* ── Footer ────────────────────────────────────────────────── */}
-      <footer className="border-t border-slate-700/50">
+      <footer className="border-t border-slate-200 dark:border-slate-700/50">
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
           <div className="flex flex-col justify-between gap-6 sm:flex-row">
             <div>
@@ -601,7 +601,7 @@ export default function LandingPage() {
                 <span className="rounded-xl bg-[#6366F1] p-2 text-white">
                   <Gavel className="h-4 w-4" />
                 </span>
-                <p className="font-semibold tracking-tight text-white">Verdict</p>
+                <p className="font-semibold tracking-tight text-slate-900 dark:text-white">Verdict</p>
               </div>
               <p className="mt-2 max-w-sm text-xs leading-relaxed text-slate-500">
                 Know what you&apos;re signing before you sign. Verdict is a decision-support
@@ -613,7 +613,7 @@ export default function LandingPage() {
               <div className="flex flex-col gap-2">
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Product</p>
                 {NAV.slice(0, 3).map((l) => (
-                  <a key={l.href} href={l.href} className="text-slate-300 hover:text-white">
+                  <a key={l.href} href={l.href} className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
                     {l.label}
                   </a>
                 ))}
@@ -621,17 +621,17 @@ export default function LandingPage() {
               <div className="flex flex-col gap-2">
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Company</p>
                 {NAV.slice(3).map((l) => (
-                  <a key={l.href} href={l.href} className="text-slate-300 hover:text-white">
+                  <a key={l.href} href={l.href} className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
                     {l.label}
                   </a>
                 ))}
-                <Link href="/app" className="text-slate-300 hover:text-white">
+                <Link href="/app" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
                   Open app
                 </Link>
               </div>
             </nav>
           </div>
-          <p className="mt-8 border-t border-slate-700/50 pt-6 text-xs text-slate-500">
+          <p className="mt-8 border-t border-slate-200 dark:border-slate-700/50 pt-6 text-xs text-slate-500">
             © 2026 Verdict. All rights reserved.
           </p>
         </div>

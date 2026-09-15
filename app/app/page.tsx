@@ -350,20 +350,20 @@ export default function AnalyzePage() {
             <Gavel className="h-5 w-5" />
           </span>
           <div className="hidden sm:block">
-            <p className="text-base font-semibold leading-tight tracking-tight text-white">Verdict</p>
-            <p className="text-xs text-slate-400">Know what you&apos;re signing before you sign.</p>
+            <p className="text-base font-semibold leading-tight tracking-tight text-slate-900 dark:text-white">Verdict</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Know what you&apos;re signing before you sign.</p>
           </div>
         </Link>
 
         {user && (
-          <nav className="hidden items-center gap-1 rounded-xl border border-slate-700/60 bg-[#1E293B] p-1 md:flex">
+          <nav className="hidden items-center gap-1 rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-[#1E293B] p-1 md:flex">
             {TABS.map((t) => (
               <button
                 key={t.id}
                 onClick={() => go(t.id)}
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition",
-                  view === t.id ? "bg-[#6366F1] text-white" : "text-slate-300 hover:text-white"
+                  view === t.id ? "bg-[#6366F1] text-white" : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
                 )}
                 style={view === t.id ? { boxShadow: "0 0 16px rgba(99,102,241,0.35)" } : undefined}
               >
@@ -375,29 +375,29 @@ export default function AnalyzePage() {
 
         <div className="flex items-center gap-2">
           {user ? (
-            <div className="flex items-center gap-3 rounded-xl border border-slate-700/60 bg-[#1E293B] py-1.5 pl-3.5 pr-1.5">
-              <span className="hidden items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-300 sm:inline-flex">
+            <div className="flex items-center gap-3 rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-[#1E293B] py-1.5 pl-3.5 pr-1.5">
+              <span className="hidden items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300 sm:inline-flex">
                 <Sparkles className="h-3.5 w-3.5 text-[#6366F1]" />
                 {plan === "pro"
                   ? "Pro · unlimited"
                   : `${remaining} free scan${remaining === 1 ? "" : "s"} left`}
               </span>
-              <span className="hidden h-5 w-px bg-slate-700/60 sm:block" />
-              <span className="inline-flex items-center text-sm font-semibold text-slate-100">
+              <span className="hidden h-5 w-px bg-slate-200 dark:bg-slate-700/60 sm:block" />
+              <span className="inline-flex items-center text-sm font-semibold text-slate-900 dark:text-slate-100">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#6366F1] text-xs font-bold text-white">
                   {name.charAt(0).toUpperCase()}
                 </span>
               </span>
-              <span className="h-5 w-px bg-slate-700/60" />
+              <span className="h-5 w-px bg-slate-200 dark:bg-slate-700/60" />
               <button
                 onClick={handleSignOut}
                 aria-label="Sign out"
-                className="hidden rounded-lg p-1.5 text-slate-400 transition hover:bg-white/5 hover:text-white md:block"
+                className="hidden rounded-lg p-1.5 text-slate-500 dark:text-slate-400 transition hover:bg-slate-900/10 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white md:block"
               >
                 <LogOut className="h-4 w-4" />
               </button>
               <button
-                className="rounded-lg p-1.5 text-slate-300 hover:bg-white/5 md:hidden"
+                className="rounded-lg p-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-900/10 dark:hover:bg-white/5 md:hidden"
                 aria-label="Toggle menu"
                 onClick={() => setMenuOpen((v) => !v)}
               >
@@ -428,19 +428,19 @@ export default function AnalyzePage() {
               onClick={() => go(t.id)}
               className={cn(
                 "flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-semibold transition",
-                view === t.id ? "bg-[#6366F1] text-white" : "text-slate-200 hover:bg-white/5"
+                view === t.id ? "bg-[#6366F1] text-white" : "text-slate-700 dark:text-slate-200 hover:bg-slate-900/10 dark:hover:bg-white/5"
               )}
             >
               <t.icon className="h-4 w-4" /> {t.label}
             </button>
           ))}
-          <div className="flex items-center justify-between border-t border-slate-700/50 px-3 py-2.5 text-sm text-slate-400">
+          <div className="flex items-center justify-between border-t border-slate-200 dark:border-slate-700/50 px-3 py-2.5 text-sm text-slate-500 dark:text-slate-400">
             <span>
               {plan === "pro" ? "Pro · unlimited" : `${remaining} free scans left`}
             </span>
             <button
               onClick={handleSignOut}
-              className="inline-flex items-center gap-1.5 font-semibold text-slate-300 hover:text-white"
+              className="inline-flex items-center gap-1.5 font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
             >
               <LogOut className="h-4 w-4" /> Sign out
             </button>
@@ -449,16 +449,16 @@ export default function AnalyzePage() {
       )}
 
       {authLoading ? (
-        <div className="card mt-8 flex items-center justify-center gap-2 p-12 text-sm text-slate-300">
+        <div className="card mt-8 flex items-center justify-center gap-2 p-12 text-sm text-slate-600 dark:text-slate-300">
           <Loader2 className="h-5 w-5 animate-spin text-[#6366F1]" /> Loading your account…
         </div>
       ) : !configured ? (
         <div className="card mt-8 border-[#EF4444]/40 p-8 text-center">
           <ShieldAlert className="mx-auto h-8 w-8 text-[#EF4444]" />
-          <h1 className="mt-3 text-xl font-semibold tracking-tight text-white">
+          <h1 className="mt-3 text-xl font-semibold tracking-tight text-slate-900 dark:text-white">
             Backend not configured
           </h1>
-          <p className="mx-auto mt-2 max-w-md text-sm text-slate-400">
+          <p className="mx-auto mt-2 max-w-md text-sm text-slate-500 dark:text-slate-400">
             Firebase credentials are missing. Add the <code className="font-mono">NEXT_PUBLIC_FIREBASE_*</code> vars
             to <code className="font-mono">.env</code> (see <code className="font-mono">.env.example</code>) and restart.
           </p>
@@ -466,15 +466,15 @@ export default function AnalyzePage() {
       ) : !user ? (
         <div className="card mx-auto mt-8 max-w-lg p-8 text-center sm:p-10">
           <span
-            className="mx-auto inline-flex rounded-xl bg-[#6366F1]/10 p-3 text-[#a5b4fc]"
+            className="mx-auto inline-flex rounded-xl bg-[#6366F1]/10 p-3 text-[#6366F1] dark:text-[#a5b4fc]"
             style={{ boxShadow: "0 0 16px rgba(99,102,241,0.35)" }}
           >
             <Lock className="h-6 w-6" />
           </span>
-          <h1 className="mt-4 text-2xl font-semibold tracking-tight text-white">
+          <h1 className="mt-4 text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
             Sign in to analyze contracts
           </h1>
-          <p className="mt-2 text-sm leading-relaxed text-slate-400">
+          <p className="mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
             Your scans run on Gemini under your account and are saved to your private history.
             Free plan includes {FREE_SCANS_PER_MONTH} scans per month.
           </p>
@@ -510,13 +510,13 @@ export default function AnalyzePage() {
                 {name.charAt(0).toUpperCase()}
               </span>
               <div>
-                <h1 className="text-xl font-semibold tracking-tight text-white">{name}</h1>
-                <p className="text-sm text-slate-400">{user.email}</p>
+                <h1 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">{name}</h1>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{user.email}</p>
               </div>
               <span
                 className={cn(
                   "chip ml-auto",
-                  plan === "pro" ? "badge-green" : "border-slate-700/60 bg-white/5 text-slate-300"
+                  plan === "pro" ? "badge-green" : "border-slate-300 dark:border-slate-700/60 bg-slate-900/5 dark:bg-white/5 text-slate-600 dark:text-slate-300"
                 )}
               >
                 {plan === "pro" ? "Pro plan" : "Free plan"}
@@ -524,7 +524,7 @@ export default function AnalyzePage() {
             </div>
 
             <div className="mt-6">
-              <label htmlFor="profile-name" className="text-sm font-semibold text-slate-200">
+              <label htmlFor="profile-name" className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                 Display name
               </label>
               <div className="mt-1.5 flex gap-2">
@@ -536,7 +536,7 @@ export default function AnalyzePage() {
                   onKeyDown={(e) => e.key === "Enter" && saveName()}
                   placeholder="Alex Rivera"
                   autoComplete="name"
-                  className="w-full rounded-xl border border-slate-700/60 bg-[#0F172A] px-3.5 py-2.5 text-sm text-slate-100 placeholder:text-slate-500"
+                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-[#0F172A] px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-500"
                 />
                 <button onClick={saveName} disabled={savingName} className="btn-primary shrink-0 !px-4 !py-2.5">
                   {savingName ? <Loader2 className="h-4 w-4 animate-spin" /> : "Save"}
@@ -556,26 +556,26 @@ export default function AnalyzePage() {
           </div>
 
           <div className="card p-6 sm:p-8">
-            <p className="text-sm font-bold uppercase tracking-wider text-slate-400">Usage this month</p>
+            <p className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Usage this month</p>
             {plan === "pro" ? (
-              <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                Unlimited scans on Pro — you&apos;ve run <strong className="text-white">{used}</strong> this month.
+              <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                Unlimited scans on Pro — you&apos;ve run <strong className="text-slate-900 dark:text-white">{used}</strong> this month.
               </p>
             ) : (
               <>
-                <p className="mt-2 text-3xl font-semibold tracking-tight text-white">
+                <p className="mt-2 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">
                   {used}
-                  <span className="text-base font-normal text-slate-400"> / {FREE_SCANS_PER_MONTH} scans used</span>
+                  <span className="text-base font-normal text-slate-500 dark:text-slate-400"> / {FREE_SCANS_PER_MONTH} scans used</span>
                 </p>
-                <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-[#0F172A]">
+                <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-slate-100 dark:bg-white dark:bg-[#0F172A]">
                   <div
                     className="h-full rounded-full bg-[#6366F1] transition-all"
                     style={{ width: `${Math.min(100, (used / FREE_SCANS_PER_MONTH) * 100)}%` }}
                   />
                 </div>
-                <p className="mt-2 text-sm text-slate-400">
+                <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
                   {remaining} scan{remaining === 1 ? "" : "s"} left. Need more?{" "}
-                  <Link href="/#pricing" className="font-semibold text-[#a5b4fc] hover:underline">
+                  <Link href="/#pricing" className="font-semibold text-[#6366F1] dark:text-[#a5b4fc] hover:underline">
                     See Pro →
                   </Link>
                 </p>
@@ -584,8 +584,8 @@ export default function AnalyzePage() {
           </div>
 
           <div className="card p-6 sm:p-8">
-            <p className="text-sm font-bold uppercase tracking-wider text-slate-400">Account</p>
-            <p className="mt-2 truncate text-sm text-slate-300">{user.email}</p>
+            <p className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Account</p>
+            <p className="mt-2 truncate text-sm text-slate-600 dark:text-slate-300">{user.email}</p>
             <button onClick={handleSignOut} className="btn-ghost mt-4">
               <LogOut className="h-4 w-4" /> Sign out
             </button>
@@ -613,16 +613,16 @@ export default function AnalyzePage() {
           ) : (
           <div className="card p-5 sm:p-6">
             <div className="flex items-center justify-between">
-              <h1 className="flex items-center gap-2 text-lg font-semibold tracking-tight text-white">
+              <h1 className="flex items-center gap-2 text-lg font-semibold tracking-tight text-slate-900 dark:text-white">
                 <History className="h-5 w-5 text-[#6366F1]" /> Past reports
               </h1>
-              {historyLoading && <Loader2 className="h-4 w-4 animate-spin text-slate-400" />}
+              {historyLoading && <Loader2 className="h-4 w-4 animate-spin text-slate-500 dark:text-slate-400" />}
             </div>
             {history.length === 0 && !historyLoading ? (
-              <div className="mt-3 rounded-xl border border-slate-700/50 bg-[#0F172A] p-8 text-center">
-                <FileText className="mx-auto h-8 w-8 text-slate-600" />
-                <p className="mt-2 text-sm font-semibold text-slate-200">No reports yet</p>
-                <p className="mx-auto mt-1 max-w-sm text-sm text-slate-400">
+              <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-8 text-center dark:border-slate-200 dark:border-slate-700/50 dark:bg-white dark:bg-[#0F172A]">
+                <FileText className="mx-auto h-8 w-8 text-slate-400 dark:text-slate-600" />
+                <p className="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-200">No reports yet</p>
+                <p className="mx-auto mt-1 max-w-sm text-sm text-slate-500 dark:text-slate-400">
                   Run your first analysis and it will be saved here for one-click re-view.
                 </p>
                 <button onClick={() => go("analyze")} className="btn-primary mt-4">
@@ -630,14 +630,14 @@ export default function AnalyzePage() {
                 </button>
               </div>
             ) : (
-              <ul className="mt-3 divide-y divide-slate-700/50">
+              <ul className="mt-3 divide-y divide-slate-200 dark:divide-slate-700/50">
                 {history.map((s) => (
                   <li key={s.id} className="flex items-center gap-3 py-3">
                     <span className={cn("w-10 shrink-0 text-lg font-semibold tabular-nums", scoreColor(s.overallRiskScore))}>
                       {s.overallRiskScore}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-semibold text-slate-100">{s.contractName}</p>
+                      <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{s.contractName}</p>
                       <p className="text-xs text-slate-500">
                         {scoreLabel(s.overallRiskScore)} · {s.flags.length} flags ·{" "}
                         {new Date(s.createdAtMs).toLocaleString()}
@@ -646,14 +646,14 @@ export default function AnalyzePage() {
                     <button
                       onClick={() => openScan(s)}
                       aria-label={`View ${s.contractName}`}
-                      className="rounded-lg p-2 text-slate-400 transition hover:bg-white/5 hover:text-white"
+                      className="rounded-lg p-2 text-slate-500 dark:text-slate-400 transition hover:bg-slate-900/10 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white"
                     >
                       <Eye className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => removeScan(s.id)}
                       aria-label={`Delete ${s.contractName}`}
-                      className="rounded-lg p-2 text-slate-400 transition hover:bg-white/5 hover:text-[#EF4444]"
+                      className="rounded-lg p-2 text-slate-500 dark:text-slate-400 transition hover:bg-slate-900/10 dark:hover:bg-white/5 hover:text-[#EF4444]"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -682,7 +682,7 @@ export default function AnalyzePage() {
               onClick={() => inputRef.current?.click()}
               className={cn(
                 "card cursor-pointer p-6 text-center transition lg:col-span-2",
-                dragging ? "border-[#6366F1] bg-[#6366F1]/10" : "hover:border-slate-500"
+                dragging ? "border-[#6366F1] bg-[#6366F1]/10" : "hover:border-slate-400 dark:hover:border-slate-500"
               )}
             >
               <input
@@ -693,10 +693,10 @@ export default function AnalyzePage() {
                 onChange={(e) => pickFile(e.target.files?.[0])}
               />
               <UploadCloud className="mx-auto h-10 w-10 text-[#6366F1]" />
-              <p className="mt-3 font-semibold tracking-tight text-slate-100">
+              <p className="mt-3 font-semibold tracking-tight text-slate-900 dark:text-slate-100">
                 {file ? file.name : "Drop contract here or click to browse"}
               </p>
-              <p className="mt-1 text-sm text-slate-400">PDF, DOCX, or TXT • parsed server-side</p>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">PDF, DOCX, or TXT • parsed server-side</p>
               {file && (
                 <p className="badge-green mx-auto mt-3 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold">
                   <FileText className="h-3.5 w-3.5" /> {(file.size / 1024).toFixed(1)} KB ready
@@ -706,15 +706,15 @@ export default function AnalyzePage() {
 
             <div className="card p-5 lg:col-span-3">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-semibold tracking-tight text-slate-100">Or paste contract text</label>
-                {fileName && <span className="font-mono text-xs text-slate-400">{fileName}</span>}
+                <label className="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-100">Or paste contract text</label>
+                {fileName && <span className="font-mono text-xs text-slate-500 dark:text-slate-400">{fileName}</span>}
               </div>
               <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="Paste the agreement text here… (Section 1. Payment: Net-90… Contractor hereby assigns all right, title…)"
                 rows={7}
-                className="mt-2 w-full resize-y rounded-xl border border-slate-700/60 bg-[#0F172A] p-3 font-mono text-[13px] leading-relaxed text-slate-200 placeholder:text-slate-500"
+                className="mt-2 w-full resize-y rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-[#0F172A] p-3 font-mono text-[13px] leading-relaxed text-slate-700 dark:text-slate-200 placeholder:text-slate-500"
               />
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 <button onClick={handleAnalyze} disabled={loading} className="btn-primary">
@@ -731,15 +731,15 @@ export default function AnalyzePage() {
 
           {/* Samples */}
           <section className="mt-4">
-            <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-300">
+            <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-300">
               <FlaskConical className="h-4 w-4 text-[#6366F1]" /> No contract handy? Try a pre-loaded demo:
             </p>
             <div className="mt-2 grid gap-3 sm:grid-cols-3">
               {SAMPLES.map((s) => (
-                <button key={s.id} onClick={() => loadSample(s.id)} className="card p-4 text-left transition hover:border-slate-500">
-                  <p className="font-semibold tracking-tight text-slate-100">{s.title}</p>
-                  <p className="mt-1 text-xs text-slate-400">{s.tagline}</p>
-                  <p className="mt-2 text-xs font-semibold text-[#a5b4fc] underline underline-offset-2">Load sample →</p>
+                <button key={s.id} onClick={() => loadSample(s.id)} className="card p-4 text-left transition hover:border-slate-400 dark:hover:border-slate-500">
+                  <p className="font-semibold tracking-tight text-slate-900 dark:text-slate-100">{s.title}</p>
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{s.tagline}</p>
+                  <p className="mt-2 text-xs font-semibold text-[#6366F1] dark:text-[#a5b4fc] underline underline-offset-2">Load sample →</p>
                 </button>
               ))}
             </div>
@@ -762,8 +762,8 @@ export default function AnalyzePage() {
         </>
       )}
 
-      <footer className="mt-12 border-t border-slate-700/50 pt-6 text-xs leading-relaxed text-slate-500">
-        <p className="font-semibold tracking-tight text-slate-300">
+      <footer className="mt-12 border-t border-slate-200 dark:border-slate-700/50 pt-6 text-xs leading-relaxed text-slate-500">
+        <p className="font-semibold tracking-tight text-slate-600 dark:text-slate-300">
           Verdict — Know what you&apos;re signing before you sign.
         </p>
         <p className="mt-1">

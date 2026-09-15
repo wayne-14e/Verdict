@@ -1,4 +1,4 @@
-# ⚖️ The Freelancer's Lawyer
+# ⚖️ Verdict
 
 > **Tagline:** Don't get burned by bad contracts. Instant, AI-powered contract analysis, risk detection, and automated negotiation for independent workers.
 
@@ -6,7 +6,7 @@
 
 ## 1. Executive Summary
 
-**The Freelancer’s Lawyer** is an AI agent web application designed to protect freelancers, agency owners, and independent contractors from predatory client contracts. By analyzing legal agreements in seconds using advanced LLMs, the app identifies hidden financial risks (e.g., Net-90 payment terms, broad IP transfers, unlimited liability, endless revision clauses), translates legal jargon into plain English, and automatically generates professional negotiation counter-offers.
+**Verdict** is an AI agent web application designed to protect freelancers, agency owners, and independent contractors from predatory client contracts. By analyzing legal agreements in seconds using advanced LLMs, the app identifies hidden financial risks (e.g., Net-90 payment terms, broad IP transfers, unlimited liability, endless revision clauses), translates legal jargon into plain English, and automatically generates professional negotiation counter-offers.
 
 ---
 
