@@ -23,6 +23,9 @@
     "tailwind-merge": "^2.5.4",
     "zod": "^3.23.8"
   },
+  "overrides": {
+    "jwks-rsa": "2.1.4"
+  },
   "devDependencies": {
     "@types/node": "^20.16.13",
     "@types/pdf-parse": "^1.1.4",
