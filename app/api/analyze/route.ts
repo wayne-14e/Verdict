@@ -231,13 +231,26 @@ async function handleAnalyze(req: NextRequest): Promise<Response> {
     result.engine = "gemini";
     return NextResponse.json(result);
   } catch (err) {
-    console.error("Gemini analysis failed:", err instanceof Error ? err.message : err);
-    const message =
-      err instanceof Error && /json|parse|schema|invalid/i.test(err.message)
-        ? "AI returned an unexpected format. Please retry — if it persists, try a shorter excerpt."
-        : "AI analysis failed. Check the GEMINI_API_KEY / GEMINI_MODEL in .env and try again.";
-    const status =
-      err instanceof Error && /quota|429|rate/i.test(err.message) ? 429 : 502;
-    return NextResponse.json({ error: message }, { status });
+    console.error(
+      "Gemini analysis failed (model %s):",
+      model,
+      err instanceof Error ? err.message : err
+    );
+    const detail = err instanceof Error ? err.message : String(err);
+    if (/json|parse|schema|invalid/i.test(detail)) {
+      return NextResponse.json(
+        {
+          error:
+            "AI returned an unexpected format. Please retry — if it persists, try a shorter excerpt.",
+        },
+        { status: 502 }
+      );
+    }
+    return NextResponse.json(
+      {
+        error: `AI analysis failed (model: ${model || "unset"}). ${detail} — check GEMINI_API_KEY / GEMINI_MODEL.`,
+      },
+      { status: /quota|429|rate/i.test(detail) ? 429 : 502 }
+    );
   }
 }
