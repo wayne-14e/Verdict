@@ -49,7 +49,7 @@ Get a key at <https://aistudio.google.com/app/apikey> and set:
 
 ```env
 GEMINI_API_KEY=your-key
-GEMINI_MODEL=gemini-1.5-flash
+GEMINI_MODEL=gemini-3.5-flash
 ```
 
 ### 2. Firebase config (required)
